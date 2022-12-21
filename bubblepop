@@ -86,4 +86,21 @@ while not game_over:
   for bubble in bubbles:
     bubble.draw()
 
-  # Check if all
+  # Check if all the bubbles have been popped
+  if num_bubbles == 0:
+    # Display the game over text
+    text = font.render("Game Over", True, (0, 0, 0))
+    text_rect = text.get_rect()
+    text_x = SCREEN_WIDTH / 2 - text_rect.width / 2
+    text_y = SCREEN_HEIGHT / 2 - text_rect.height / 2
+    screen.blit(text, (text_x, text_y))
+
+  # Update the display
+  pygame.display.update()
+
+  # Set the frame rate to 60 FPS
+  clock.tick(60)
+
+# Quit pygame
+pygame.quit()
+
