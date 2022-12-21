@@ -1,0 +1,89 @@
+import random
+import pygame
+
+# Initialize pygame
+pygame.init()
+
+# Set the screen size
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+# Create the screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Set the title of the window
+pygame.display.set_caption("Bubble Pop")
+
+# Load the bubble image
+bubble_image = pygame.image.load("bubble.png")
+
+# Set the initial number of bubbles
+num_bubbles = 10
+
+# Create a list to store the bubble objects
+bubbles = []
+
+# Define the Bubble class
+class Bubble:
+  def __init__(self):
+    # Set the initial position and speed of the bubble
+    self.x = random.randint(0, SCREEN_WIDTH - 32)
+    self.y = random.randint(0, SCREEN_HEIGHT - 32)
+    self.speed_x = random.randint(-3, 3)
+    self.speed_y = random.randint(-3, 3)
+
+  def update(self):
+    # Update the position of the bubble
+    self.x += self.speed_x
+    self.y += self.speed_y
+
+    # Check if the bubble is off the screen
+    if self.x < 0 or self.x > SCREEN_WIDTH - 32:
+      self.speed_x *= -1
+    if self.y < 0 or self.y > SCREEN_HEIGHT - 32:
+      self.speed_y *= -1
+
+  def draw(self):
+    # Draw the bubble on the screen
+    screen.blit(bubble_image, (self.x, self.y))
+
+# Initialize the bubbles
+for i in range(num_bubbles):
+  bubbles.append(Bubble())
+
+# Set the font for the game over text
+font = pygame.font.Font(None, 36)
+
+# Set the game over flag to False
+game_over = False
+
+# Set the clock to control the frame rate
+clock = pygame.time.Clock()
+
+# Start the game loop
+while not game_over:
+  # Handle events
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      game_over = True
+    if event.type == pygame.MOUSEBUTTONDOWN:
+      # Check if the mouse position is over a bubble
+      mouse_x, mouse_y = pygame.mouse.get_pos()
+      for bubble in bubbles:
+        if bubble.x < mouse_x < bubble.x + 32 and bubble.y < mouse_y < bubble.y + 32:
+          # Remove the bubble from the list
+          bubbles.remove(bubble)
+          num_bubbles -= 1
+
+  # Update the bubbles
+  for bubble in bubbles:
+    bubble.update()
+
+  # Clear the screen
+  screen.fill((255, 255, 255))
+
+  # Draw the bubbles
+  for bubble in bubbles:
+    bubble.draw()
+
+  # Check if all
